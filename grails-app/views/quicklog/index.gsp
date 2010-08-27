@@ -101,6 +101,6 @@
     <div id="chartsActive" class="chartsActive"></div>
     <div id="chart" class="chart"></div>
     <div id="loaded" class="loaded"></div>
-    <iframe  name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
+    <iframe name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
     </body>
 </html>

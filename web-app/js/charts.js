@@ -3,7 +3,7 @@ function doLineChart(container,catagories,seriesData) {
 var chart = new Highcharts.Chart({
 	chart: {
 	renderTo: container,
-	margin: [80, 100, 60, 100],
+	margin: [60, 100, 60, 100],
 	zoomType: 'xy'
 },
 title: {
