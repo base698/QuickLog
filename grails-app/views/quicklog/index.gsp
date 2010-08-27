@@ -9,8 +9,9 @@
         .center { margin: 0 auto; }
         .line { height: 1px; }
         .chart { width: 750px; height: 450px; margin: 0 auto; border: 2px solid; }
-        .chartButton { width: 20px; height: 20px; background: blue; }
+        .chartButton { display: inline; width: 25px; height: 20px; background: blue; margin: 5px; border:2px solid; color: white; padding: 3px;}
         .loaded { position: absolute; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
+        .chartsActive { height: 30px; margin: 0 auto; cursor: pointer; cursor: hand; }
         p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
         .dropOver { border: 3px dotted; background: #EDEDED;}
         </style>
@@ -43,18 +44,17 @@
   			   showCurrentChart(data[0].timePoints);
   			   var start = jumpsToShow.length;
   			   for( var i = 0; i < data.length; i++) {
-  			      $(".loaded").append("<div></div>")
-  			      .addClass("chartButton").attr("id",i+start)
+				  var index = i+start;
+  			      $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
+  			      $("#"+index).addClass("chartButton").attr("id",index)
   			      .click(function() {
-  			                console.log($(this).attr(id));
   			                showCurrentChart(jumpsToShow[$(this).attr("id")].timePoints);
   			             });
   			   }
   			   jumpsToShow = jumpsToShow.concat(data);
-  			   console.log(jumpsToShow.length);
+  			   // XXX Likely prone to a race condition.
  			   clearInterval(interval);
  			} catch(ex) {
- 			   console.log(ex);
  			   if(exCount++ > 5) {
  			      clearInterval(interval);
  			      exCount = 0;
@@ -94,21 +94,13 @@
     </head>
     <body>
     <h2>QuickLog</h2>
-    <form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps">
+    <form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps.json">
         <input name="gpx" id="gpx" size="27" type="file" /><br />
         <input type="button" id="action" value="Go" /><br />
-        <iframe id="upload_target" name="upload_target" src="" style="width:0;height:0;border:0px solid #fff;"></iframe>
     </form>
+    <div id="chartsActive" class="chartsActive"></div>
     <div id="chart" class="chart"></div>
     <div id="loaded" class="loaded"></div>
-  
+    <iframe  name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
     </body>
 </html>
-
-
-
-
-
-
-
-<

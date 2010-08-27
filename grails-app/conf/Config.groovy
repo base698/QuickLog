@@ -22,7 +22,7 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       css: 'text/css',
                       csv: 'text/csv',
                       all: '*/*',
-                      json: ['application/json','text/json'],
+                      json: 'text/json',
                       form: 'application/x-www-form-urlencoded',
                       multipartForm: 'multipart/form-data'
                     ]
