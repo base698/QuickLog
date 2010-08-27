@@ -1,3 +1,5 @@
+package quicklog
+
 class Jump {
    List<JumpTimePoint> timePoints;
    Double openingAltitude = 0.0;

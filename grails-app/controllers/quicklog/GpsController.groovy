@@ -29,12 +29,14 @@ class GpsController {
           File xmlFile = new File("web-app/truncated.gpk");
 	      xmlStr = xmlFile.getText();       
        }
+       
 	   def gpx = new XmlParser().parseText(xmlStr)
 	   def track = gpx.trk
-	   ArrayList<GPS> gpsPoints = GPX.getTrack(track);
-       def totalHorizontalDistance = GPX.calculateTotalDistanceMiles(gpsPoints);
-       def listOfJumpPts = GPX.listGpsToJump(gpsPoints)
+	   def gpsTracks = GPX.getTracks(track);
+	   
+       //def totalHorizontalDistance = GPX.calculateTotalDistanceMiles(gpsPoints);
+       def jumps = GPX.listTracksToJumps(gpsTracks)
 
-       render listOfJumpPts as JSON
+       render jumps as JSON
     }
 }

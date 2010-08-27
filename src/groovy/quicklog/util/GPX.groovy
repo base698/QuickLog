@@ -10,6 +10,7 @@ import java.util.Map;
 
 import quicklog.GPS
 import quicklog.JumpTimePoint
+import quicklog.Jump
 
 class GPX {
     static final double MILES_KM = 0.621371192;
@@ -23,7 +24,7 @@ class GPX {
 	public static SimpleDateFormat sdf = new SimpleDateFormat("kk:mm:ss");
 		
 	static def testMain() {
-		File xmlFile = new File("/home/base698/Downloads/truncated.gpk");
+		File xmlFile = new File("web-app/truncated.gpk");
 		String xmlStr = xmlFile.getText();
 		def gpx = new XmlParser().parseText(xmlStr)
 		def track = gpx.trk
@@ -47,18 +48,20 @@ class GPX {
 	}
 	
 	// For all the tracks in the gpx file get all the track points.
-	static List<GPS> getTrack(tracks) {
-		List<GPS> points = new ArrayList<GPS>();
+	static def getTracks(trks) {
+		def tracks = [];
 		
-		tracks.each { trk ->
+		trks.each { trk ->
+		   List<GPS> points = new ArrayList<GPS>();
 		   trk.trkseg.each { ts ->
 		      ts.each { tp ->
 		   	     points.add(getGps(tp));
 		   	  }
 		   }
+		   tracks.add(points);
 		}
 
-		return points;
+		return tracks;
 	}
 	
 	// 
@@ -85,7 +88,18 @@ class GPX {
 		
 	}
 	
-	static def listGpsToJump(gps) {
+	static def listTracksToJumps(gpsTracks) {
+	    def jumps = [];
+	    
+	    gpsTracks.each { g ->
+	        jumps.add(new Jump(listGpsToJumpPoints(g)));
+	    
+	    }
+	    
+	    return jumps;
+	}
+	
+	static def listGpsToJumpPoints(gps) {
 		List<JumpTimePoint> list = new ArrayList<JumpTimePoint>();
 		
 		def startTime = gps[0].time;

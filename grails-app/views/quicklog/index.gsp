@@ -39,12 +39,13 @@
 		    var text = frame.firstChild.innerText;
 		    try {
   			   var data = eval(text);
-  			   var glideSeries = getSeries(data,'glideRatio');
-  			   var vSeries = getSeries(data,'verticalSpeed');
-  			   var xAxis = getXAxis(data,'elapsedTime');
+  			   console.log(data);
+  			   var glideSeries = getSeries(data[0].timePoints,'glideRatio');
+  			   var vSeries = getSeries(data[0].timePoints,'verticalSpeed');
+  			   var xAxis = getXAxis(data[0].timePoints,'elapsedTime');
   			   glideSeries.yAxis = 0;
   			   doLineChart('chart',xAxis,[glideSeries,vSeries]);
- 			   showTotals(data);
+ 			   showTotals(data[0].timePoints);
  			   clearInterval(interval);
  			} catch(ex) {
  			   console.log(ex);
