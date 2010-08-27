@@ -11,7 +11,7 @@
         .chart { width: 700px; height: 500px; margin: 0 auto; }
         .loaded { position: absolute; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
         p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
-        .dropOver { border:  1px solid; background: #33AA33;}
+        .dropOver { border:  1px solid; background: #33AA33; width:100px;height:100px;}
         </style>
         
         <script type="text/javascript" src="/QuickLog/js/jquery-1.4.2.js"></script>
@@ -32,9 +32,13 @@
 				});
 			});
 			
-			$('.chart').mouseOver(function() { $(this).addClass('dropOver'); });
-			$('.chart').mouseOut(function() { $(this).removeClass('dropOver'); });
-			
+			$('#chart').mouseOver(function() { alert('test'); });
+			$('#chart').mouseOut(function() { $(this).removeClass('dropOver'); });
+			$("#loaded").addClass("dropOver");
+			document.getElementById('file_upload_form').onsubmit=function() {
+				document.getElementById('file_upload_form').target = 'upload_target';
+			}
+
 		});
 		
 		function showTotals(data) {
@@ -68,7 +72,7 @@
         <iframe id="upload_target" name="upload_target" src="" style="width:0;height:0;border:0px solid #fff;"></iframe>
     </form>
     <div id="chart" class="chart"></div>
-    <div id="loaded" class="loaded"></div>
+    <div id="loaded"></div>
   
     </body>
 </html>
