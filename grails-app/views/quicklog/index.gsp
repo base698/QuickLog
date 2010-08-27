@@ -9,7 +9,7 @@
         .center { margin: 0 auto; }
         .line { height: 1px; }
         .chart { width: 750px; height: 450px; margin: 0 auto; border: 2px solid; }
-   
+        .chartButton { width: 20px; height: 20px; background: blue; }
         .loaded { position: absolute; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
         p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
         .dropOver { border: 3px dotted; background: #EDEDED;}
@@ -19,6 +19,7 @@
         <script type="text/javascript" src="../js/highcharts.js"></script>
         <script type="text/javascript" src="../js/charts.js"></script>
 		<script type="text/javascript">
+		
 
 		$(document).ready(function(){		
 			$('#chart').mouseover(function() { $(this).addClass('dropOver'); });
@@ -30,22 +31,27 @@
 
 		});
 		
-
+		var jumpsToShow = [];
 		var interval = 0;
 		var exCount = 0;
 		function getDataFunction() {
-		 	console.log('interval');
 			var frame = window.frames["upload_target"].document;
 		    var text = frame.firstChild.innerText;
+		    
 		    try {
   			   var data = eval(text);
-  			   console.log(data);
-  			   var glideSeries = getSeries(data[0].timePoints,'glideRatio');
-  			   var vSeries = getSeries(data[0].timePoints,'verticalSpeed');
-  			   var xAxis = getXAxis(data[0].timePoints,'elapsedTime');
-  			   glideSeries.yAxis = 0;
-  			   doLineChart('chart',xAxis,[glideSeries,vSeries]);
- 			   showTotals(data[0].timePoints);
+  			   showCurrentChart(data[0].timePoints);
+  			   var start = jumpsToShow.length;
+  			   for( var i = 0; i < data.length; i++) {
+  			      $(".loaded").append("<div></div>")
+  			      .addClass("chartButton").attr("id",i+start)
+  			      .click(function() {
+  			                console.log($(this).attr(id));
+  			                showCurrentChart(jumpsToShow[$(this).attr("id")].timePoints);
+  			             });
+  			   }
+  			   jumpsToShow = jumpsToShow.concat(data);
+  			   console.log(jumpsToShow.length);
  			   clearInterval(interval);
  			} catch(ex) {
  			   console.log(ex);
@@ -54,6 +60,15 @@
  			      exCount = 0;
  			   }
  			}
+		}
+		
+		function showCurrentChart(data) {
+			var glideSeries = getSeries(data,'glideRatio');
+  			var vSeries = getSeries(data,'verticalSpeed');
+  			var xAxis = getXAxis(data,'elapsedTime');
+  			glideSeries.yAxis = 0;
+  			doLineChart('chart',xAxis,[glideSeries,vSeries]);
+ 			showTotals(data);
 		}
 		
 		function showTotals(data) {
@@ -69,7 +84,6 @@
 		}
 		
 		function format(formatStr,args){
-		   console.log(formatStr);
            for(var i = 0; i<args.length;i++) {
              var regEx = new RegExp("\\{" + i + "\\}","g");
              formatStr = formatStr.replace(regEx, args[i]);
