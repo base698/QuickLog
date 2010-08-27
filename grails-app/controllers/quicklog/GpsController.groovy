@@ -11,23 +11,22 @@ class GpsController {
     def index = {
        String xmlStr;
        if(params['gpx']) {
+       
  			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request
   			CommonsMultipartFile file = (CommonsMultipartFile)multiRequest.getFile("gpx")
   			BufferedReader bin = new BufferedReader(new InputStreamReader(file.getInputStream()))
   			String line = bin.readLine()
   			StringBuffer sb = new StringBuffer();
-		  // print each line
-  			while (line != null) {
-  			 sb.append(line);
-  			 line = bin.readLine();
+		 	
+		 	while (line != null) {
+  			  sb.append(line);
+  			  line = bin.readLine();
    			 
   			}
 
-
           xmlStr = sb.toString()
-          println xmlStr
        } else {
-          File xmlFile = new File("/home/base698/Downloads/truncated.gpk");
+          File xmlFile = new File("web-app/truncated.gpk");
 	      xmlStr = xmlFile.getText();       
        }
 	   def gpx = new XmlParser().parseText(xmlStr)
