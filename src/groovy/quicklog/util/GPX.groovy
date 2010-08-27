@@ -17,6 +17,8 @@ class GPX {
 	static final double FEET_MILES = 5280.0;
 	static final double G = 32.6;
 	static final double DESCENT_FOR_EXIT = 65;
+	static final double SUSTAINED_TIME_AFTER_EXIT = 5.0;
+	
 	//2010-02-21T19:27:12Z
 	public static SimpleDateFormat sdf = new SimpleDateFormat("kk:mm:ss");
 		
@@ -44,6 +46,7 @@ class GPX {
 		return totalDistance*MILES_KM;
 	}
 	
+	// For all the tracks in the gpx file get all the track points.
 	static List<GPS> getTrack(tracks) {
 		List<GPS> points = new ArrayList<GPS>();
 		
@@ -58,6 +61,7 @@ class GPX {
 		return points;
 	}
 	
+	// 
 	static GPS getGps(trkpt) {
 		GPS gps = new GPS();	
 		gps.lat = Double.parseDouble(trkpt.'@lat');
@@ -67,6 +71,7 @@ class GPX {
 		return gps;
 	}
 
+    // Haversine formula for calculating distance (km) of GPS
 	static double distance(GPS pt1,GPS pt2) {
 		double R = 6371.0; // km
 		double dLat = Math.toRadians(pt2.lat-pt1.lat);
@@ -114,7 +119,10 @@ class GPX {
 
 		   // MPH
 		   p.horizontalSpeed = p.distChange / (secondsSince/60/60)
-		   p.glideRatio = p.horizontalSpeed/p.verticalSpeed;
+		   p.glideRatio = -1
+		   if(p.verticalSpeed != 0.0 || p.verticalSpeed != 0) {
+		      p.glideRatio = p.horizontalSpeed/p.verticalSpeed;
+		   }
 		   list.add(p);
 		   
 		   last = g;
