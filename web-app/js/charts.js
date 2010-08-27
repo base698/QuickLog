@@ -22,13 +22,13 @@ yAxis: [{ // Primary yAxis
 			return this.value  +' MPH';
 		},
 		style: {
-			color: '#89A54E'
+			color: '#A52222'
 		}
 	},
 	title: {
 		text: 'Vertical Speed',
 		style: {
-			color: '#89A54E'
+			color: '#A52222'
 		},
 		margin: 60
 	}
@@ -76,7 +76,7 @@ series: [{
 
 }, {
 	name: 'Vertical Speed',
-	color: '#89A54E',
+	color: '#A52222',
 	type: 'spline',
 	data: seriesData[1]
 }]

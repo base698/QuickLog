@@ -3,13 +3,19 @@ package quicklog
 import quicklog.GPS
 import quicklog.util.GPX
 import grails.converters.*
+import org.springframework.web.multipart.MultipartHttpServletRequest
+import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class GpsController {
 
     def index = {
        String xmlStr;
        if(params['gpx']) {
+          MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request
+          CommonsMultipartFile file = (CommonsMultipartFile)multiRequest.getFile("gpx")
+          BufferedReader bin = new BufferedReader(new InputStreamReader(file.getInputStream()))
           xmlStr = params['gpx']
+          println xmlStr
        } else {
           File xmlFile = new File("/home/base698/Downloads/truncated.gpk");
 	      xmlStr = xmlFile.getText();       
