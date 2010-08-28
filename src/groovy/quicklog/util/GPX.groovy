@@ -110,6 +110,7 @@ class GPX {
 		   JumpTimePoint p = new JumpTimePoint();
 		   p.lat = g.lat;
 		   p.lon = g.lon;
+                   p.elev = g.elev;
 		   if(last==null) {
 		      last = g;
 		      lastPt = p;
