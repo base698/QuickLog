@@ -1,5 +1,7 @@
 package quicklog
 
+import groovy.util.GroovyCollections
+
 class Jump {
    List<JumpTimePoint> timePoints;
    Double openingAltitude = 0.0;
@@ -12,6 +14,7 @@ class Jump {
    Integer freefallTime = 0.0;
    Integer canopyTime = 0.0;
    String units;
+   def fMin,fMax,fAvg,cMin,cMax,cAvg;
    
    def Jump(timePoints) {
       this.timePoints = timePoints
@@ -20,6 +23,51 @@ class Jump {
       calculateOpeningAltitude();
       truncateBegin();
       truncateEnd();
+      adjustElapsedTime();      
+      calculate();
+   }
+
+   def calculate() {
+       def canopySpeeds = [];
+       def freefallSpeeds = [];
+       def freefall = false;
+       def canopy = false;
+       for(it in this.timePoints) {
+          if(it.isExit) freefall = true;
+          if(it.isOpening) canopy = true;
+
+          if(canopy) {
+	     canopySpeeds.add(it.verticalSpeed);
+             continue;
+          }
+
+          if(freefall) {
+	     freefallSpeeds.add(it.verticalSpeed);
+          }
+       }
+       fMin = GroovyCollections.min(freefallSpeeds)
+       fMax = GroovyCollections.max(freefallSpeeds)
+       fAvg = GroovyColloctions.sum(freefallSpeeds)/freefallSpeeds.size()
+       cMin = GroovyCollections.min(canopySpeeds)
+       cMax = GroovyCollections.max(canopySpeeds)
+       cAvg = GroovyColloctions.sum(canopySpeeds)/canopySpeeds.size()
+       
+       
+   }
+
+   def adjustElapsedTime() {
+      def count = 0;
+      def last = null;
+      for(it in this.timePoints) {
+          if(count == 0) {
+	     it.elapsedTime = 0;
+ 	     last = it;
+	     count++;
+             continue;
+	  }
+          it.elapsedTime = last.elapsedTime += it.secondsSince;
+	  count++;
+      }
 
    }
 
@@ -67,7 +115,6 @@ class Jump {
 
           if(it.isExit) {
 	     this.timePoints.removeRange(0,count)
-
              break;
 	  }
 
@@ -83,30 +130,37 @@ class Jump {
    def calculateExitAltitude() {
       def last = null;
       def secondCount = 0;
-      def secondToPoint = [:]
-     
-      for(it in this.timePoints) {
-         secondToPoint[it.elapsedTime] = it
+      def count = 0;
 
+      for(it in this.timePoints) {
+      	     
          if(it.verticalSpeed > 60.0) {
 	     secondCount++
   	 }
          if(secondCount == 4) {
-	     it.isExit = true
-             this.exitAltitude = Math.round(it.elev);
+	     def exitJumpPoint;
+	     
+	     if(count > 3) {
+	     	exitJumpPoint = this.timePoints.get(count-3);
+	     } else {
+	        exitJumpPoint = it;
+             }
+	     exitJumpPoint.isExit = true
+             this.exitAltitude = Math.round(exitJumpPoint.elev);
              return;
 	 }	 
      	 last = it;
+         count++;
       }
    }
    
    def calculateOpeningAltitude() {
       def last = null;
       def secondCount = 0;
-      def secondToPoint = [:]
+      def count = 0;
       def okToCalculate
+
       for(it in this.timePoints) {
-         secondToPoint[it.elapsedTime] = it
          if(it.verticalSpeed > 60) {
 	    okToCalculate = true		
  	 }
@@ -119,12 +173,21 @@ class Jump {
 	     secondCount = 0;
 	 }
 
+	 // Shift the opening point back a little to compensate for
+         // when the calculation started
          if(secondCount == 4) {
-	     it.isOpening = true
-             // Subtract exit altitude?
-             this.openingAltitude = Math.round(it.elev)
+	     def openingPoint;
+             if(count > 3) {
+	        openingPoint = this.timePoints.get(count-3);
+	     } else {
+	        openingPoint = it;
+	     }
+
+	     openingPoint.isOpening = true
+             this.openingAltitude = Math.round(openingPoint.elev)
 	     return;
 	 }	 
+	 count++
      	 last = it;
       }
    }

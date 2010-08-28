@@ -120,6 +120,7 @@ class GPX {
 		   // Seconds
 		   def secondsSince = g.elapsedTimeSince(last)
 		   p.elapsedTime = g.elapsedTimeSince(last) + lastPt.elapsedTime;
+		   p.secondsSince = secondsSince;
 
 		   // FEET
 		   def elevChange = g.elapsedElevation(last);

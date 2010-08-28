@@ -6,6 +6,7 @@ class JumpTimePoint {
     Double horizontalSpeed = 0.0;
     Double verticalSpeed = 0.0;
     Integer elapsedTime = 0;
+    Integer secondsSince = 0;
     Float glideRatio = 0.0;
     Double distChange = 0.0;
     Double elapsedVerticalDistance = 0.0;

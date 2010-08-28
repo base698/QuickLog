@@ -76,11 +76,11 @@
 	var fMin,fMax,fAvg,cMin,cMax,cAvg;
 	var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
 		 "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
-		  "Exit Altitude: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
+		  "Exit: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
 		  "</p>";
      //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
 
-       html = format(html,[fMin,fMax,fAvg,cMin,cMax,cAvg,data.exitAltitude,data.openingAltitude]);
+       html = format(html,[data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude]);
        $('.loaded').html(html);
     }
 
