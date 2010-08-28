@@ -10,7 +10,8 @@ class GpsController {
 
     def index = {
        String xmlStr;
-       if(params['gpx']) {
+
+       if(params['gpx'] && params['gpx'].getSize() > 0) {
        
  			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request
   			CommonsMultipartFile file = (CommonsMultipartFile)multiRequest.getFile("gpx")

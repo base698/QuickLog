@@ -50,13 +50,17 @@ class Jump {
           }
        }
 
-       fMin = Math.round( GroovyCollections.min(freefallSpeeds) )
-       fMax = Math.round( GroovyCollections.max(freefallSpeeds) )
-       fAvg = Math.round( GroovyCollections.sum(freefallSpeeds)/freefallSpeeds.size() )
-       cMin = Math.round( GroovyCollections.min(canopySpeeds) )
-       cMax = Math.round( GroovyCollections.max(canopySpeeds) )
-       cAvg = Math.round( GroovyCollections.sum(canopySpeeds)/canopySpeeds.size() )
-       
+       if(this.exitAltitude > 0.0 && freefallSpeeds.size() > 0) {
+       	  fMin = Math.round( GroovyCollections.min(freefallSpeeds) )
+          fMax = Math.round( GroovyCollections.max(freefallSpeeds) )
+          fAvg = Math.round( GroovyCollections.sum(freefallSpeeds)/freefallSpeeds.size() )
+       }
+
+       if(this.openingAltitude > 0.0 && canopySpeeds.size() > 0) {
+          cMin = Math.round( GroovyCollections.min(canopySpeeds) )
+          cMax = Math.round( GroovyCollections.max(canopySpeeds) )
+          cAvg = Math.round( GroovyCollections.sum(canopySpeeds)/canopySpeeds.size() )
+       }
        
    }
 

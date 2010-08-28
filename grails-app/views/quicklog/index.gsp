@@ -28,9 +28,13 @@
 		    $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
 		    $('#action').click(function() { 
 		       $('#file_upload_form').submit(); 
-			    interval = setInterval(getDataFunction,1000);
+	               interval = setInterval(getDataFunction,1000);
 		    });		
-
+	            $('#demo').click(function() {
+	               document.file_upload_form.reset();
+                       $('#file_upload_form').submit(); 
+	               interval = setInterval(getDataFunction,1000);
+                    });
 	    });
 
 	    var jumpsToShow = [];
@@ -95,10 +99,13 @@
 </head>
 <body>
 <h2>QuickLog</h2>
-<form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps.json">
+<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps.json">
     <input name="gpx" id="gpx" size="27" type="file" /><br />
     <input type="button" id="action" value="Go" /><br />
+    <input type="button" id="demo" value="Demo"/>
 </form>
+
+
 <div id="chartsActive" class="chartsActive"></div>
 <div id="chart" class="chart"></div>
 <div id="loaded" class="loaded"></div>
