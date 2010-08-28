@@ -35,9 +35,13 @@ class Jump {
        for(it in this.timePoints) {
           if(it.isExit) freefall = true;
           if(it.isOpening) canopy = true;
-
+          
+          def canopyPoints = 0
           if(canopy) {
-	     canopySpeeds.add(it.verticalSpeed);
+        //     if(canopyPoints>4) {
+	        canopySpeeds.add(it.verticalSpeed);
+        //     }
+	     canopyPoints++;
              continue;
           }
 
@@ -45,12 +49,13 @@ class Jump {
 	     freefallSpeeds.add(it.verticalSpeed);
           }
        }
-       fMin = GroovyCollections.min(freefallSpeeds)
-       fMax = GroovyCollections.max(freefallSpeeds)
-       fAvg = GroovyColloctions.sum(freefallSpeeds)/freefallSpeeds.size()
-       cMin = GroovyCollections.min(canopySpeeds)
-       cMax = GroovyCollections.max(canopySpeeds)
-       cAvg = GroovyColloctions.sum(canopySpeeds)/canopySpeeds.size()
+
+       fMin = Math.round( GroovyCollections.min(freefallSpeeds) )
+       fMax = Math.round( GroovyCollections.max(freefallSpeeds) )
+       fAvg = Math.round( GroovyCollections.sum(freefallSpeeds)/freefallSpeeds.size() )
+       cMin = Math.round( GroovyCollections.min(canopySpeeds) )
+       cMax = Math.round( GroovyCollections.max(canopySpeeds) )
+       cAvg = Math.round( GroovyCollections.sum(canopySpeeds)/canopySpeeds.size() )
        
        
    }
@@ -177,8 +182,8 @@ class Jump {
          // when the calculation started
          if(secondCount == 4) {
 	     def openingPoint;
-             if(count > 3) {
-	        openingPoint = this.timePoints.get(count-3);
+             if(count > 5) {
+	        openingPoint = this.timePoints.get(count-5);
 	     } else {
 	        openingPoint = it;
 	     }
