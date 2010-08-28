@@ -18,6 +18,66 @@ class Jump {
       units = "English"
       calculateExitAltitude();
       calculateOpeningAltitude();
+      truncateBegin();
+      truncateEnd();
+
+   }
+
+   def truncate() {
+      return (this.openingAltitude > 0.0 && this.exitAltitude > 0.0) 
+   }
+
+   def truncateEnd() {
+      if(!this.truncate()) {
+         return;
+      }
+      
+      def count = 0;
+      def okToTruncate = false;
+      def elevChanges = 0;
+      for(it in this.timePoints) {
+         if(it.isExit) {
+            okToTruncate = true;
+	 }
+
+         if(it.elevChange < 100.0) {
+	    elevChanges++;
+         }
+
+         if(elevChanges > 5 && okToTruncate) {
+            println count
+            println this.timePoints.size()
+	    this.timePoints.removeRange(count,this.timePoints.size()-1);
+            return;
+         }
+
+         count++;
+      }
+   }
+
+   def truncateBegin() {
+       def count = 0;
+       if(!this.truncate()) {
+          return;
+       }
+       
+       def currentTime;
+       for(it in this.timePoints) {
+          currentTime = this.elapsedTime;
+
+          if(it.isExit) {
+	     this.timePoints.removeRange(0,count)
+
+             break;
+	  }
+
+          count++;
+
+       }
+
+       for(it in this.timePoints) {
+       	  this.elapsedTime -= currentTime
+       }
    }
 
    def calculateExitAltitude() {
@@ -32,8 +92,9 @@ class Jump {
 	     secondCount++
   	 }
          if(secondCount == 4) {
-	     it.isOpen = true
+	     it.isExit = true
              this.exitAltitude = Math.round(it.elev);
+             return;
 	 }	 
      	 last = it;
       }
@@ -59,7 +120,7 @@ class Jump {
 	 }
 
          if(secondCount == 4) {
-	     it.isOpen = true
+	     it.isOpening = true
              // Subtract exit altitude?
              this.openingAltitude = Math.round(it.elev)
 	     return;

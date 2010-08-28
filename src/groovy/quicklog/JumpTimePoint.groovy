@@ -11,7 +11,7 @@ class JumpTimePoint {
     Double elapsedVerticalDistance = 0.0;
     Double elevChange = 0.0;
     Double elapsedHorizontalDistance = 0.0;
-    Boolean isOpen = false;
+    Boolean isOpening = false;
     Boolean isExit = false;
     Double elev = 0.0
 

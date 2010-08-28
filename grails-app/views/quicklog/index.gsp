@@ -11,7 +11,7 @@
     .chart { width: 750px; height: 450px; margin: 0 auto; border: 2px solid; }
     .chartButton { display: inline; width: 45px; height: 40px; background: blue; 
     margin: 3px; border:2px solid; color: white; padding: 3px; cursor: pointer; cursor: hand; }
-    .loaded { position: absolute; width:300px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
+    .loaded { position: absolute; width:300px; height:100px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
     .chartsActive { height: 30px; margin: 0 auto; }
     p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
     .dropOver { border: 3px dotted; background: #EDEDED;}
@@ -76,7 +76,7 @@
 	var fMin,fMax,fAvg,cMin,cMax,cAvg;
 	var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
 		 "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
-		  "Exit Altitude: {6} Opening: {7}<br/>" + 
+		  "Exit Altitude: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
 		  "</p>";
      //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
 
