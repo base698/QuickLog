@@ -6,6 +6,7 @@
 	font-size:1.2em;
 	color: #333333;
     }
+    .inline { display: inline; }
     .center { margin: 0 auto; }
     .line { height: 1px; }
     .chart { width: 750px; height: 450px; margin: 0 auto; border: 2px solid; }
@@ -20,16 +21,27 @@
     <script type="text/javascript" src="/QuickLog/js/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="../js/highcharts.js"></script>
     <script type="text/javascript" src="../js/charts.js"></script>
+    <script type="text/javascript"
+       src="http://maps.google.com/maps/api/js?sensor=true"></script>
 	    <script type="text/javascript">
-
 
 	    $(document).ready(function(){		
 		    $('#chart').mouseover(function() { $(this).addClass('dropOver'); });
 		    $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
+                    $('#map').click(function() {
+                        chartClickCount++;
+                        if((chartClickCount%2)==0) {
+                           showCurrentChart(jumpsToShow[currentDisplay]);
+                        } else {
+                           doMap(jumpsToShow[currentDisplay].timePoints);
+                        }
+                    });
+
 		    $('#action').click(function() { 
 		       $('#file_upload_form').submit(); 
 	               interval = setInterval(getDataFunction,1000);
-		    });		
+		    });
+
 	            $('#demo').click(function() {
 	               document.file_upload_form.reset();
                        $('#file_upload_form').submit(); 
@@ -40,10 +52,12 @@
 	    var jumpsToShow = [];
 	    var interval = 0;
 	    var exCount = 0;
+            var chartClickCount = 0;
+            var currentDisplay = 0;
 	    function getDataFunction() {
 		var frame = window.frames["upload_target"].document;
 		var text = frame.firstChild.innerText;
-
+                chartClickCount = 0;
 		try {
 		       var data = eval(text);
 		       showCurrentChart(data[0]);
@@ -54,6 +68,7 @@
 			  $("#"+index).addClass("chartButton").attr("id",index)
 			  .click(function() {
 				    showCurrentChart(jumpsToShow[$(this).attr("id")]);
+                                    currentDisplay = $(this).attr("id"); 
 				 });
 		       }
 		       jumpsToShow = jumpsToShow.concat(data);
@@ -95,14 +110,42 @@
        }
        return formatStr;
     }
-	    </script>
+    
+    function doMap(mapData) {
+      var centerIdx = Math.round(mapData.length/2);
+
+      var centerPt = new google.maps.LatLng(mapData[centerIdx].lat,mapData[centerIdx].lon);
+      var myOptions = {
+        zoom: 14,
+        center: centerPt,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+
+      var map = new google.maps.Map(document.getElementById("chart"),
+          myOptions);
+      for(var i = 0; i<mapData.length; i++) {
+         var myLatLng = new google.maps.LatLng(mapData[i].lat, mapData[i].lon);
+         var marker = new google.maps.Marker({
+           position: myLatLng,
+           map: map,
+//           icon: image
+           });
+      }
+   
+    }
+
+</script>
 </head>
 <body>
 <h2>QuickLog</h2>
 <form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps.json">
-    <input name="gpx" id="gpx" size="27" type="file" /><br />
-    <input type="button" id="action" value="Go" /><br />
-    <input type="button" id="demo" value="Demo"/>
+<div>
+    <input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />
+    <input type="button" id="action" value="Go" class="inline"/><br />
+    <input type="button" id="demo" value="Demo" class="inline"/>
+    <input type="button" id="map" value="Map" class="inline"/>
+</div>
 </form>
 
 
