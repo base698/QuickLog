@@ -22,8 +22,8 @@ class Jump {
       calculateExitAltitude();
       calculateOpeningAltitude();
       truncateBegin();
-      truncateEnd();
-      adjustElapsedTime();      
+      //truncateEnd();
+      //adjustElapsedTime();      
       calculate();
    }
 
@@ -93,11 +93,11 @@ class Jump {
       def okToTruncate = false;
       def elevChanges = 0;
       for(it in this.timePoints) {
-         if(it.isExit) {
+         if(it.isOpening) {
             okToTruncate = true;
 	 }
 
-         if(it.elevChange < 100.0) {
+         if(it.elevChange < 50.0) {
 	    elevChanges++;
          }
 

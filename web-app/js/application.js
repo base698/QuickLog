@@ -12,84 +12,84 @@ if (Ajax && (Ajax != null)) {
 	});
 }
 
+$(document).ready(function(){		
+   $('#chart').mouseover(function() { $(this).addClass('dropOver'); });
+   $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
+   $('#map').click(function() {
+       chartClickCount++;
+       if((chartClickCount%2)==0) {
+           showCurrentChart(jumpsToShow[currentDisplay]);
+       } else {
+           doMap(jumpsToShow[currentDisplay].timePoints);
+       }
+   });
 
-	    $(document).ready(function(){		
-		    $('#chart').mouseover(function() { $(this).addClass('dropOver'); });
-		    $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
-                    $('#map').click(function() {
-                        chartClickCount++;
-                        if((chartClickCount%2)==0) {
-                           showCurrentChart(jumpsToShow[currentDisplay]);
-                        } else {
-                           doMap(jumpsToShow[currentDisplay].timePoints);
-                        }
-                    });
+   $('#action').click(function() { 
+      $('#file_upload_form').submit(); 
+      interval = setInterval(getDataFunction,1000);
+   });
 
-		    $('#action').click(function() { 
-		       $('#file_upload_form').submit(); 
-	               interval = setInterval(getDataFunction,1000);
-		    });
+   $('#demo').click(function() {
+     document.file_upload_form.reset();
+     $('#file_upload_form').submit(); 
+     interval = setInterval(getDataFunction,1000);
+   });
+});
 
-	            $('#demo').click(function() {
-	               document.file_upload_form.reset();
-                       $('#file_upload_form').submit(); 
-	               interval = setInterval(getDataFunction,1000);
-                    });
-	    });
-
-	    var jumpsToShow = [];
-	    var interval = 0;
-	    var exCount = 0;
-            var chartClickCount = 0;
-            var currentDisplay = 0;
-	    function getDataFunction() {
-		var frame = window.frames["upload_target"].document;
-		var text = frame.firstChild.innerText;
-                chartClickCount = 0;
-		try {
-		       var data = eval(text);
-		       showCurrentChart(data[0]);
-		       var start = jumpsToShow.length;
-		       for( var i = 0; i < data.length; i++) {
-			      var index = i+start;
-			  $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
-			  $("#"+index).addClass("chartButton").attr("id",index)
-			  .click(function() {
-				    showCurrentChart(jumpsToShow[$(this).attr("id")]);
-                                    currentDisplay = $(this).attr("id"); 
-				 });
-		       }
-		       jumpsToShow = jumpsToShow.concat(data);
-		       // XXX Likely prone to a race condition.
-		       clearInterval(interval);
-		    } catch(ex) {
-		       if(exCount++ > 5) {
-			  clearInterval(interval);
-			  exCount = 0;
-		       }
-		    }
-	    }
-
-	    function showCurrentChart(data) {
-		var glideSeries = getSeries(data.timePoints,'glideRatio');
-		var vSeries = getSeries(data.timePoints,'verticalSpeed');
-		var xAxis = getXAxis(data.timePoints,'elapsedTime');
-		glideSeries.yAxis = 0;
-		doLineChart('chart',xAxis,[glideSeries,vSeries]);
-		showTotals(data);
-	    }
-
-    function showTotals(data) {
-	var fMin,fMax,fAvg,cMin,cMax,cAvg;
-	var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
-		 "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
-		  "Exit: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
-		  "</p>";
-     //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
-
-       html = format(html,[data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude]);
-       $('.loaded').html(html);
+var jumpsToShow = [];
+var interval = 0;
+var exCount = 0;
+var chartClickCount = 0;
+var currentDisplay = 0;
+	    
+function getDataFunction() {		
+   var frame = window.frames["upload_target"].document;
+   var text = frame.firstChild.innerText;
+   chartClickCount = 0;
+   try {
+       var data = eval(text);
+       showCurrentChart(data[0]);
+       var start = jumpsToShow.length;
+       for( var i = 0; i < data.length; i++) {
+	  var index = i+start;
+	  $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
+	  $("#"+index).addClass("chartButton").attr("id",index)
+		      .click(function() {
+			 showCurrentChart(jumpsToShow[$(this).attr("id")]);
+                         currentDisplay = $(this).attr("id"); 
+		      });
+	}
+	jumpsToShow = jumpsToShow.concat(data);
+	// XXX Likely prone to a race condition.
+	clearInterval(interval);
+    } catch(ex) {
+       if(exCount++ > 5) {
+	  clearInterval(interval);
+	  exCount = 0;
+       }
     }
+}
+
+function showCurrentChart(data) {
+    var glideSeries = getSeries(data.timePoints,'glideRatio');
+    var vSeries = getSeries(data.timePoints,'verticalSpeed');
+    var xAxis = getXAxis(data.timePoints,'elapsedTime');
+    glideSeries.yAxis = 0;
+    doLineChart('chart',xAxis,[glideSeries,vSeries]);
+    showTotals(data);
+ }
+
+function showTotals(data) {
+    var fMin,fMax,fAvg,cMin,cMax,cAvg;
+    var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
+	       "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
+	        "Exit: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
+	        "</p>";
+    //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
+
+    html = format(html,[data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude]);
+    $('.loaded').html(html);
+}
 
     function format(formatStr,args) {
        for(var i = 0; i<args.length;i++) {
@@ -99,26 +99,25 @@ if (Ajax && (Ajax != null)) {
        return formatStr;
     }
     
-    function doMap(mapData) {
-      var centerIdx = Math.round(mapData.length/2);
+function doMap(mapData) {
+   var centerIdx = Math.round(mapData.length/2);
 
-      var centerPt = new google.maps.LatLng(mapData[centerIdx].lat,mapData[centerIdx].lon);
-      var myOptions = {
-        zoom: 14,
-        center: centerPt,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
+   var centerPt = new google.maps.LatLng(mapData[centerIdx].lat,mapData[centerIdx].lon);
+   var myOptions = {
+      zoom: 14,
+      center: centerPt,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+   };
 
-
-      var map = new google.maps.Map(document.getElementById("chart"),
-          myOptions);
-      for(var i = 0; i<mapData.length; i++) {
-         var myLatLng = new google.maps.LatLng(mapData[i].lat, mapData[i].lon);
-         var marker = new google.maps.Marker({
+   var map = new google.maps.Map(document.getElementById("chart"),
+        myOptions);
+   for(var i = 0; i<mapData.length; i++) {
+      var myLatLng = new google.maps.LatLng(mapData[i].lat, mapData[i].lon);
+      var marker = new google.maps.Marker({
            position: myLatLng,
-           map: map,
-//           icon: image
-           });
-      }
+           map: map
+//         icon: image
+      });
+   }
    
-    }
+}
