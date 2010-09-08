@@ -10,12 +10,15 @@
     .center { margin: 0 auto; }
     .line { height: 1px; }
     .chart { width: 750px; height: 450px; margin: 0 auto; }
-    .chartButton { display: inline; width: 45px; height: 40px; background: blue; 
-    margin: 3px; border:2px solid; color: white; padding: 3px; cursor: pointer; cursor: hand; }
+    .chartButton { width: 80px; height: 70px; float:left;  
+     border:1px solid #000; margin: 3px; color: white; cursor: pointer; cursor: hand; background: url(../images/chartIcon.png);}
+    .mapIcon { background: url(../images/mapIcon.png); }
+    .iconHover { opacity: 0.5; }
     .loaded { position: absolute; width:300px; height:100px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
-    .chartsActive { height: 30px; margin: 0 auto; }
+    .chartsActive { height: 100px; width: 100%;  margin: 0 auto; }
     .chartWrapper { width: 760px; height:460px; margin: 0 auto; border: 2px solid;}
     p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
+    /* add z-index for drawing over components */
     .dropOver { border: 3px dotted; background: #EDEDED;}
     </style>
 

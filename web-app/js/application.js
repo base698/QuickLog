@@ -51,13 +51,13 @@ function getDataFunction() {
 
        for( var i = 0; i < data.length; i++) {
 	  var index = i+start;
-	  $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
+	  $("#chartsActive").append(format('<div id="{0}">&nbsp;</div>',[index]));
 	  $("#"+index).attr("id",index).toggleSwitch();
 	}
 
 	clearInterval(interval);
     } catch(ex) {
-       console.log(ex);
+       if(console) console.log(ex);
        if(exCount++ > 5) {
 	  clearInterval(interval);
 	  exCount = 0;
@@ -86,13 +86,13 @@ function showTotals(data) {
     $('.loaded').html(html);
 }
 
-    function format(formatStr,args) {
-       for(var i = 0; i<args.length;i++) {
-	 var regEx = new RegExp("\\{" + i + "\\}","g");
-	 formatStr = formatStr.replace(regEx, args[i]);
-       }
-       return formatStr;
-    }
+function format(formatStr,args) {
+   for(var i = 0; i<args.length;i++) {
+      var regEx = new RegExp("\\{" + i + "\\}","g");
+      formatStr = formatStr.replace(regEx, args[i]);
+   }
+   return formatStr;
+}
     
 function doMap(mapData) {
    var centerIdx = Math.round(mapData.length/2);
