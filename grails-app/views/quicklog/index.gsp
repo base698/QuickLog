@@ -25,10 +25,12 @@
     <script type="text/javascript"
        src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script type="text/javascript" src="../js/application.js"></script>
+    <script type="text/javascript" src="../js/toggle.js"></script>
 </head>
 <body>
 <h2>QuickLog</h2>
-<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps.json">
+<iframe id="upload_target" name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
+<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps" onsubmit="return true">
 <div>
     <input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />
     <input type="button" id="action" value="Go" class="inline"/><br />
@@ -43,6 +45,5 @@
    <div id="chart" class="chart"></div>
 </div>
 <div id="loaded" class="loaded"></div>
-<iframe name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
 </body>
 </html>

@@ -43,26 +43,33 @@ var chartClickCount = 0;
 var currentDisplay = 0;
 	    
 function getDataFunction() {		
-   var frame = window.frames["upload_target"].document;
+   var frame = window.frames[0].document;
+   console.log(frame);
    var text = frame.firstChild.innerText;
+   if(!text) {
+       text = frame.firstChild.textContent;
+   }
+
    chartClickCount = 0;
    try {
        var data = eval(text);
        showCurrentChart(data[0]);
        var start = jumpsToShow.length;
+
        for( var i = 0; i < data.length; i++) {
 	  var index = i+start;
 	  $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
-	  $("#"+index).addClass("chartButton").attr("id",index)
+	  $("#"+index).attr("id",index)
 		      .click(function() {
 			 showCurrentChart(jumpsToShow[$(this).attr("id")]);
                          currentDisplay = $(this).attr("id"); 
-		      });
+			  }).toggleSwitch();
 	}
 	jumpsToShow = jumpsToShow.concat(data);
 	// XXX Likely prone to a race condition.
 	clearInterval(interval);
     } catch(ex) {
+       console.log(ex);
        if(exCount++ > 5) {
 	  clearInterval(interval);
 	  exCount = 0;

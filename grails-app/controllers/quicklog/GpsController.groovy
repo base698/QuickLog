@@ -37,7 +37,7 @@ class GpsController {
 	   
        //def totalHorizontalDistance = GPX.calculateTotalDistanceMiles(gpsPoints);
        def jumps = GPX.listTracksToJumps(gpsTracks)
-
-       render jumps as JSON
+       def converted = new JSON(jumps);
+       render converted.toString()
     }
 }
