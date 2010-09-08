@@ -15,15 +15,7 @@ if (Ajax && (Ajax != null)) {
 $(document).ready(function(){		
    $('#chart').mouseover(function() { $(this).addClass('dropOver'); });
    $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
-   $('#map').click(function() {
-       chartClickCount++;
-       if((chartClickCount%2)==0) {
-           showCurrentChart(jumpsToShow[currentDisplay]);
-       } else {
-           doMap(jumpsToShow[currentDisplay].timePoints);
-       }
-   });
-
+   
    $('#gpx').change(function() {
       $('#file_upload_form').submit(); 
       interval = setInterval(getDataFunction,1000);
@@ -44,7 +36,6 @@ var currentDisplay = 0;
 	    
 function getDataFunction() {		
    var frame = window.frames[0].document;
-   console.log(frame);
    var text = frame.firstChild.innerText;
    if(!text) {
        text = frame.firstChild.textContent;
@@ -56,17 +47,14 @@ function getDataFunction() {
        showCurrentChart(data[0]);
        var start = jumpsToShow.length;
 
+       jumpsToShow = jumpsToShow.concat(data);
+
        for( var i = 0; i < data.length; i++) {
 	  var index = i+start;
 	  $("#chartsActive").append("<div id=\"" + index + "\">" + index + "</div>");
-	  $("#"+index).attr("id",index)
-		      .click(function() {
-			 showCurrentChart(jumpsToShow[$(this).attr("id")]);
-                         currentDisplay = $(this).attr("id"); 
-			  }).toggleSwitch();
+	  $("#"+index).attr("id",index).toggleSwitch();
 	}
-	jumpsToShow = jumpsToShow.concat(data);
-	// XXX Likely prone to a race condition.
+
 	clearInterval(interval);
     } catch(ex) {
        console.log(ex);

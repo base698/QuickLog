@@ -34,7 +34,6 @@
 <div>
     <input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />
     <input type="button" id="demo" value="Demo" class="inline"/>
-    <input type="button" id="map" value="Map" class="inline"/>
 </div>
 </form>
 
