@@ -24,7 +24,7 @@ $(document).ready(function(){
        }
    });
 
-   $('#action').click(function() { 
+   $('#gpx').change(function() {
       $('#file_upload_form').submit(); 
       interval = setInterval(getDataFunction,1000);
    });

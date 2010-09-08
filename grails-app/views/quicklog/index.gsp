@@ -30,15 +30,13 @@
 <body>
 <h2>QuickLog</h2>
 <iframe id="upload_target" name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
-<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps" onsubmit="return true">
+<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps">
 <div>
     <input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />
-    <input type="button" id="action" value="Go" class="inline"/><br />
     <input type="button" id="demo" value="Demo" class="inline"/>
     <input type="button" id="map" value="Map" class="inline"/>
 </div>
 </form>
-
 
 <div id="chartsActive" class="chartsActive"></div>
 <div id="chartWrapper" class="chartWrapper">
