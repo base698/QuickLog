@@ -13,7 +13,7 @@
     .chartButton { width: 80px; height: 70px; float:left;  
      border:1px solid #000; margin: 3px; color: white; cursor: pointer; cursor: hand; background: url(../images/chartIcon.png);}
     .mapIcon { background: url(../images/mapIcon.png); }
-    .iconHover { opacity: 0.5; }
+    .iconHover { opacity: 0.6; }
     .loaded { position: absolute; width:300px; height:100px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
     .chartsActive { height: 100px; width: 100%;  margin: 0 auto; }
     .chartWrapper { width: 760px; height:460px; margin: 0 auto; border: 2px solid;}

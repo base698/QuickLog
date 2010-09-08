@@ -8,8 +8,13 @@
 	showCurrentChart(jumpsToShow[$(this).attr("id")]);
         var currentDisplay = $(this).attr("id"); 
 
-	$(this).mouseover(function() { $(this).addClass("iconHover"); });
-        $(this).mouseout(function() { $(this).removeClass("iconHover"); });
+	$(this).mouseover(function() { 
+            drawStateOver($(this),showMap);  
+	});
+
+        $(this).mouseout(function() { 
+            drawStateOut($(this),showMap);  
+        });
 
 	$(this).click(function() {
 	  showMap = !showMap;
@@ -20,8 +25,27 @@
 	     showCurrentChart(jumpsToShow[currentDisplay]);
              $(this).removeClass("mapIcon");
           }
+          drawStateOut($(this),showMap);
         });
 
     };
+    
+    var drawStateOver = function(obj,showMap) {
+       obj.addClass("iconHover");
+       if(showMap) {
+	  obj.removeClass("mapIcon");
+       } else {
+	  obj.addClass("mapIcon");
+       }
+    };
 
+    var drawStateOut = function(obj, showMap) {
+       obj.removeClass("iconHover");
+       if(!showMap) {
+	  obj.removeClass("mapIcon");
+       } else {
+	  obj.addClass("mapIcon");
+       }
+ 
+    };
 })(jQuery);
