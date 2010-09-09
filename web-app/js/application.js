@@ -12,10 +12,46 @@ if (Ajax && (Ajax != null)) {
 	});
 }
 
-$(document).ready(function(){		
-   $('#chart').mouseover(function() { $(this).addClass('dropOver'); });
-   $('#chart').mouseout(function() { $(this).removeClass('dropOver'); });
-   
+$(document).ready(function(){	
+  // Setup HTML5 Drag/Drop File	
+  if (typeof window.FileReader === 'undefined') {
+     $('#formElements').append('<input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />');
+  } else {
+      // Setup drag drop.
+      var holder = document.getElementById('chart');
+      
+      holder.addEventListener('dragover', 
+            function (e) { 
+              e.stopPropagation(); 
+              e.preventDefault();  
+              return false; },
+            false);
+      holder.addEventListener('dragend', 
+         function (e) { 
+            e.stopPropagation(); 
+            e.preventDefault(); 
+             return false; },false);
+      holder.addEventListener('drop', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+      reader.onload = function(e) {
+          var frame = window.frames[0].document;
+          $.ajax({
+            type: 'POST',
+            url: '../gps',
+	    data: {'gpx':e.target.result},
+            success: getDataFunction
+          });
+
+      };
+      reader.readAsText(file);
+      return false;
+     },false);
+  }
+
    $('#gpx').change(function() {
       $('#file_upload_form').submit(); 
       interval = setInterval(getDataFunction,1000);
@@ -28,18 +64,23 @@ $(document).ready(function(){
    });
 });
 
+function getTextFromIFrame() {
+   var frame = window.frames[0].document;
+   var text = frame.firstChild.innerText;
+   if(!text) {
+       text = frame.firstChild.textContent;
+   }
+}
 var jumpsToShow = [];
 var interval = 0;
 var exCount = 0;
 var chartClickCount = 0;
 var currentDisplay = 0;
 	    
-function getDataFunction() {		
-   var frame = window.frames[0].document;
-   var text = frame.firstChild.innerText;
-   if(!text) {
-       text = frame.firstChild.textContent;
-   }
+function getDataFunction(text) {		
+    if(!text) {
+       text = getTextFromIFrame();
+    }
 
    chartClickCount = 0;
    try {

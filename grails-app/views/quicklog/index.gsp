@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>QuickLog</title>
@@ -35,16 +36,16 @@
 <h2>QuickLog</h2>
 <iframe id="upload_target" name="upload_target" style="width:1;height:1;border:0px solid #fff;"></iframe>  
 <form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps">
-<div>
-    <input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />
-    <input type="button" id="demo" value="Demo" class="inline"/>
+<div id="formElements">
 </div>
 </form>
 
 <div id="chartsActive" class="chartsActive"></div>
-<!--<div id="chartWrapper" class="chartWrapper">-->
-   <div id="chart" class="chart"></div>
-<!--</div>-->
+
+<div id="chart" class="chart" style="border: 1px solid;"></div>
 <div id="loaded" class="loaded"></div>
+<!-- XXX Use for drag 
+<input type="button" id="demo" value="Demo" class="inline"/>
+-->
 </body>
 </html>
