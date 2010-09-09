@@ -70,6 +70,7 @@ function getTextFromIFrame() {
    if(!text) {
        text = frame.firstChild.textContent;
    }
+   return text;
 }
 var jumpsToShow = [];
 var interval = 0;
