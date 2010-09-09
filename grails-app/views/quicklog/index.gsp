@@ -24,7 +24,6 @@
     </style>
     
     <script type="text/javascript" src="/QuickLog/js/jquery-1.4.2.js"></script>
-    <script type="text/javascript" src="../js/h5utils.js"></script>
     <script type="text/javascript" src="../js/highcharts.js"></script>
     <script type="text/javascript" src="../js/charts.js"></script>
     <script type="text/javascript"
