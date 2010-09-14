@@ -6,7 +6,7 @@ String.format = function() {
    var formatStr = arguments[0];
 
    for(var i = 1; i<arguments.length;i++) {
-       var regEx = new RegExp("\\{" + (i-1) + "\\}","g");
+      var regEx = new RegExp("\\{" + (i-1) + "\\}","g");
       formatStr = formatStr.replace(regEx, arguments[i]);
    }
    return formatStr;
@@ -27,7 +27,7 @@ if (Ajax && (Ajax != null)) {
 }
 
 $(document).ready(function(){	
-  // Setup HTML5 Drag/Drop File	
+  // Setup form if HTML5 Drag/Drop FileReader not available	
   if (typeof window.FileReader === 'undefined') {
      $('#formElements').append('<input name="gpx" id="gpx" size="27" type="file" class="inline"/><br />');
   } else {
@@ -68,13 +68,13 @@ $(document).ready(function(){
 
    $('#gpx').change(function() {
       $('#file_upload_form').submit(); 
-      interval = setInterval(getDataFunction,1000);
+      getDataFunction.interval = setInterval(getDataFunction,1000);
    });
 
    $('#demo').click(function() {
      document.file_upload_form.reset();
      $('#file_upload_form').submit(); 
-     interval = setInterval(getDataFunction,1000);
+     getDataFunction.interval = setInterval(getDataFunction,1000);
    });
 });
 
@@ -86,18 +86,17 @@ function getTextFromIFrame() {
    }
    return text;
 }
+
 var jumpsToShow = [];
-var interval = 0;
-var exCount = 0;
-var chartClickCount = 0;
 var currentDisplay = 0;
+getDataFunction.exCount = 0;
+getDataFunction.interval = 0;
 	    
 function getDataFunction(text) {		
     if(!text) {
        text = getTextFromIFrame();
     }
 
-   chartClickCount = 0;
    try {
        var data = eval(text);
        showCurrentChart(data[0]);
@@ -111,12 +110,12 @@ function getDataFunction(text) {
 	  $("#"+index).attr("id",index).toggleSwitch();
 	}
 
-	clearInterval(interval);
+	clearInterval(getDataFunction.interval);
     } catch(ex) {
        if(console) console.log(ex);
-       if(exCount++ > 5) {
-	  clearInterval(interval);
-	  exCount = 0;
+       if(getDataFunction.exCount++ > 5) {
+	  clearInterval(getDataFunction.interval);
+	  getDataFunction.exCount = 0;
        }
     }
 }
@@ -135,8 +134,8 @@ function showTotals(data) {
     var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
 	       "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
 	        "Exit: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
-	        "</p>";
-    //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
+	        "";
+    html += "Time: {8} seconds</p>";
 
     html = String.format(html,data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude);
     $('.loaded').html(html);
