@@ -1,6 +1,6 @@
 String.format = function() {
    if(arguments.length == 0) {
-       throw new Error("I'll never understand it.");
+       throw new Error("Format requires at least a string.");
    }
 
    var formatStr = arguments[0];
