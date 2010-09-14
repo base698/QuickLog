@@ -5,7 +5,7 @@
         var defaults = {};
         var options = $.extend(defaults, options);  
 	$(this).addClass("chartButton");
-	showCurrentChart(jumpsToShow[$(this).attr("id")]);
+	showChart(jumpsToShow[$(this).attr("id")]);
         var currentDisplay = $(this).attr("id"); 
 
 	$(this).mouseover(function() { 
@@ -22,7 +22,7 @@
              doMap(jumpsToShow[currentDisplay].timePoints);
              $(this).addClass("mapIcon");
           } else {
-	     showCurrentChart(jumpsToShow[currentDisplay]);
+	     showChart(jumpsToShow[currentDisplay]);
              $(this).removeClass("mapIcon");
           }
           drawStateOut($(this),showMap);

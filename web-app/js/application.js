@@ -57,7 +57,7 @@ $(document).ready(function(){
             type: 'POST',
             url: '../gps',
 	    data: {'gpx':e.target.result},
-            success: getDataFunction
+            success: parseChartData
           });
 
       };
@@ -68,13 +68,13 @@ $(document).ready(function(){
 
    $('#gpx').change(function() {
       $('#file_upload_form').submit(); 
-      getDataFunction.interval = setInterval(getDataFunction,1000);
+      parseChartData.interval = setInterval(parseChartData,1000);
    });
 
    $('#demo').click(function() {
      document.file_upload_form.reset();
      $('#file_upload_form').submit(); 
-     getDataFunction.interval = setInterval(getDataFunction,1000);
+     parseChartData.interval = setInterval(parseChartData,1000);
    });
 });
 
@@ -89,17 +89,17 @@ function getTextFromIFrame() {
 
 var jumpsToShow = [];
 var currentDisplay = 0;
-getDataFunction.exCount = 0;
-getDataFunction.interval = 0;
+parseChartData.exCount = 0;
+parseChartData.interval = 0;
 	    
-function getDataFunction(text) {		
+function parseChartData(text) {		
     if(!text) {
        text = getTextFromIFrame();
     }
 
    try {
        var data = eval(text);
-       showCurrentChart(data[0]);
+       showChart(data[0]);
        var start = jumpsToShow.length;
 
        jumpsToShow = jumpsToShow.concat(data);
@@ -110,17 +110,17 @@ function getDataFunction(text) {
 	  $("#"+index).attr("id",index).toggleSwitch();
 	}
 
-	clearInterval(getDataFunction.interval);
+	clearInterval(parseChartData.interval);
     } catch(ex) {
        if(console) console.log(ex);
-       if(getDataFunction.exCount++ > 5) {
-	  clearInterval(getDataFunction.interval);
-	  getDataFunction.exCount = 0;
+       if(parseChartData.exCount++ > 5) {
+	  clearInterval(parseChartData.interval);
+	  parseChartData.exCount = 0;
        }
     }
 }
 
-function showCurrentChart(data) {
+function showChart(data) {
     var glideSeries = getSeries(data.timePoints,'glideRatio');
     var vSeries = getSeries(data.timePoints,'verticalSpeed');
     var xAxis = getXAxis(data.timePoints,'elapsedTime');
