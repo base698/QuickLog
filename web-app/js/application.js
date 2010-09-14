@@ -1,3 +1,17 @@
+String.format = function() {
+   if(arguments.length == 0) {
+       throw new Error("I'll never understand it.");
+   }
+
+   var formatStr = arguments[0];
+
+   for(var i = 1; i<arguments.length;i++) {
+       var regEx = new RegExp("\\{" + (i-1) + "\\}","g");
+      formatStr = formatStr.replace(regEx, arguments[i]);
+   }
+   return formatStr;
+}
+
 var Ajax;
 if (Ajax && (Ajax != null)) {
 	Ajax.Responders.register({
@@ -93,7 +107,7 @@ function getDataFunction(text) {
 
        for( var i = 0; i < data.length; i++) {
 	  var index = i+start;
-	  $("#chartsActive").append(format('<div id="{0}">&nbsp;</div>',[index]));
+	  $("#chartsActive").append(String.format('<div id="{0}">&nbsp;</div>',index));
 	  $("#"+index).attr("id",index).toggleSwitch();
 	}
 
@@ -124,18 +138,10 @@ function showTotals(data) {
 	        "</p>";
     //  html += "Time: " + data[data.length-1].elapsedTime + " seconds</p>";
 
-    html = format(html,[data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude]);
+    html = String.format(html,data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude);
     $('.loaded').html(html);
 }
 
-function format(formatStr,args) {
-   for(var i = 0; i<args.length;i++) {
-      var regEx = new RegExp("\\{" + i + "\\}","g");
-      formatStr = formatStr.replace(regEx, args[i]);
-   }
-   return formatStr;
-}
-    
 function doMap(mapData) {
    var centerIdx = Math.round(mapData.length/2);
 
