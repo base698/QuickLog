@@ -36,16 +36,19 @@ $(document).ready(function(){
       
       holder.addEventListener('dragover', 
             function (e) { 
+	      $("#chart").addClass("dropOver");
               e.stopPropagation(); 
               e.preventDefault();  
               return false; },
             false);
-      holder.addEventListener('dragend', 
-         function (e) { 
+      holder.addEventListener('dragleave', function(e) { $("#chart").removeClass("dropOver"); }, false);
+      holder.addEventListener('dragend', function (e) { 
+	    $("#chart").removeClass("dropOver");
             e.stopPropagation(); 
             e.preventDefault(); 
              return false; },false);
       holder.addEventListener('drop', function (e) {
+      $("#chart").removeClass("dropOver");
       e.stopPropagation();
       e.preventDefault();
 
@@ -99,7 +102,6 @@ function parseChartData(text) {
 
    try {
        var data = eval(text);
-       showChart(data[0]);
        var start = jumpsToShow.length;
 
        jumpsToShow = jumpsToShow.concat(data);
@@ -109,6 +111,8 @@ function parseChartData(text) {
 	  $("#chartsActive").append(String.format('<div id="{0}">&nbsp;</div>',index));
 	  $("#"+index).attr("id",index).toggleSwitch();
 	}
+
+        showChart(data[0]);
 
 	clearInterval(parseChartData.interval);
     } catch(ex) {
@@ -131,11 +135,11 @@ function showChart(data) {
 
 function showTotals(data) {
     var fMin,fMax,fAvg,cMin,cMax,cAvg;
-    var html = "<p>Freefall: min: {0} max: {1} avg: {2}<br/>" +
-	       "Canopy: min: {3} max: {4} avg: {5}<br/>" + 
-	        "Exit: <b>{6}</b> Opening: <b>{7}</b><br/>" + 
+    var html = "<p>Freefall: min: {0} max: {1} avg: {2}</p>" +
+	       "<p>Canopy: min: {3} max: {4} avg: {5}</p>" + 
+	        "<p>Exit: <b>{6}</b> Opening: <b>{7}</b></p>" + 
 	        "";
-    html += "Time: {8} seconds</p>";
+    html += "<p>Time: {8} seconds</p>";
 
     html = String.format(html,data.fMin,data.fMax,data.fAvg,data.cMin,data.cMax,data.cAvg,data.exitAltitude,data.openingAltitude);
     $('.loaded').html(html);

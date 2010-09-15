@@ -1,10 +1,14 @@
 // This will be the google maps/graph button
 (function($) {
+    var switches = [];
     $.fn.toggleSwitch = function(options) {
         var showMap = false;
         var defaults = {};
-        var options = $.extend(defaults, options);  
+        var options = $.extend(defaults, options);
+        switches.push($(this));
+        removeSelectedClass();
 	$(this).addClass("chartButton");
+        $(this).addClass("dataSelected");
 	showChart(jumpsToShow[$(this).attr("id")]);
         var currentDisplay = $(this).attr("id"); 
 
@@ -17,6 +21,8 @@
         });
 
 	$(this).click(function() {
+	  removeSelectedClass();
+          $(this).addClass("dataSelected");
 	  showMap = !showMap;
           if(showMap) {
              doMap(jumpsToShow[currentDisplay].timePoints);
@@ -29,7 +35,11 @@
         });
 
     };
-    
+    var removeSelectedClass = function() {
+	  for(var i = 0; i<switches.length; i++) {
+	      switches[i].removeClass("dataSelected");
+	  }
+    };    
     var drawStateOver = function(obj,showMap) {
        obj.addClass("iconHover");
        if(showMap) {

@@ -15,12 +15,15 @@
      border:1px solid #000; margin: 3px; color: white; cursor: pointer; cursor: hand; background: url(../images/chartIcon.png);}
     .mapIcon { background: url(../images/mapIcon.png); }
     .iconHover { opacity: 0.6; }
-    .loaded { position: absolute; width:300px; height:100px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px solid; }
+    .loaded { position: absolute; width:300px; height:100px; padding: 5px 5px 5px 5px; top: 10px; right: 10px; border: 1px dashed; }
     .chartsActive { height: 100px; width: 100%;  margin: 0 auto; }
-    .chartWrapper { width: 760px; height:460px; margin: 0 auto; border: 2px solid;}
+    .chartWrapper { width: 760px; height:460px; margin: 0 auto; }
     p { padding-left: 20px; font-family: arial; color: #333333; font-size: 14px; }
+    .loaded p { margin-top: 3px; margin-bottom: 3px; padding-top: 2px; padding-bottom: 2px; }
     /* add z-index for drawing over components */
-    .dropOver { border: 3px dotted; background: #EDEDED;}
+    .dropOver { border: 3px dotted; background: #EDEDED; z-index: 9000; }
+    .dataSelected { border: 2px solid rgb(200,0,0); }
+    .containerMask div { opacity: 0.2 !important; }
     </style>
     
     <script type="text/javascript" src="/QuickLog/js/jquery-1.4.2.js"></script>
@@ -33,14 +36,15 @@
 </head>
 <body>
 <h2>QuickLog</h2>
-<form id="file_upload_form" name="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="../gps">
+<form id="file_upload_form" name="file_upload_form" method="post" 
+   enctype="multipart/form-data" target="upload_target" action="../gps">
 <div id="formElements">
 </div>
 </form>
 
 <div id="chartsActive" class="chartsActive"></div>
 
-<div id="chart" class="chart" style="border: 1px solid;"></div>
+<div id="chart" class="chart"></div>
 <div id="loaded" class="loaded"></div>
 <!-- XXX Use for drag -->
 <input type="button" id="demo" value="Demo" class="inline"/>
