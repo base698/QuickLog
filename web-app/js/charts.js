@@ -13,8 +13,8 @@ title: {
 	}
 },
 xAxis: [{
-	text: 'Elapsed Time (s)',
-	categories: catagories
+	text: 'Elapsed Time'
+	//	categories: catagories
 }],
 yAxis: [{ // Primary yAxis
 	labels: {
@@ -53,7 +53,7 @@ yAxis: [{ // Primary yAxis
 tooltip: {
 	formatter: function() {
 		return ''+
-			this.x +': '+ this.y +
+			this.x +' s : '+ this.y +
 			(this.series.name == 'Glide Ratio' ? '' : ' MPH');
 	}
 },
@@ -67,14 +67,14 @@ legend: {
 	},
 	backgroundColor: '#FFFFFF'
 },
-series: [{
+        series : [{
 	name: 'Glide Ratio',
 	color: '#4572A7',
 	type: 'spline',
 	yAxis: 1,
 	data: seriesData[0]		
 
-}, {
+        }, {
 	name: 'Vertical Speed',
 	color: '#A52222',
 	type: 'spline',

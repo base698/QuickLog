@@ -22,7 +22,7 @@ class Jump {
       calculateExitAltitude();
       calculateOpeningAltitude();
       truncateBegin();
-      //truncateEnd();
+      truncateEnd();
       //adjustElapsedTime();      
       calculate();
    }
@@ -32,16 +32,19 @@ class Jump {
        def freefallSpeeds = [];
        def freefall = false;
        def canopy = false;
+       int canopyPoints = 0;
        for(it in this.timePoints) {
           if(it.isExit) freefall = true;
           if(it.isOpening) canopy = true;
           
-          def canopyPoints = 0
+
           if(canopy) {
-        //     if(canopyPoints>4) {
-	        canopySpeeds.add(it.verticalSpeed);
-        //     }
-	     canopyPoints++;
+             // correct for snivel
+             if(canopyPoints > 1) {
+                canopySpeeds.add(it.verticalSpeed);
+             }
+
+  	     canopyPoints++;
              continue;
           }
 
@@ -49,7 +52,7 @@ class Jump {
 	     freefallSpeeds.add(it.verticalSpeed);
           }
        }
-
+       
        if(this.exitAltitude > 0.0 && freefallSpeeds.size() > 0) {
        	  fMin = Math.round( GroovyCollections.min(freefallSpeeds) )
           fMax = Math.round( GroovyCollections.max(freefallSpeeds) )
@@ -64,22 +67,6 @@ class Jump {
        
    }
 
-   def adjustElapsedTime() {
-      def count = 0;
-      def last = null;
-      for(it in this.timePoints) {
-          if(count == 0) {
-	     it.elapsedTime = 0;
- 	     last = it;
-	     count++;
-             continue;
-	  }
-          it.elapsedTime = last.elapsedTime += it.secondsSince;
-	  count++;
-      }
-
-   }
-
    def truncate() {
       return (this.openingAltitude > 0.0 && this.exitAltitude > 0.0) 
    }
@@ -88,7 +75,7 @@ class Jump {
       if(!this.truncate()) {
          return;
       }
-      
+
       def count = 0;
       def okToTruncate = false;
       def elevChanges = 0;
@@ -97,14 +84,12 @@ class Jump {
             okToTruncate = true;
 	 }
 
-         if(it.elevChange < 50.0) {
+         if(it.elevChange < 5.0) {
 	    elevChanges++;
          }
 
-         if(elevChanges > 5 && okToTruncate) {
-            println count
-            println this.timePoints.size()
-	    this.timePoints.removeRange(count,this.timePoints.size()-1);
+         if(elevChanges > 10 && okToTruncate) {
+	    this.timePoints.removeRange(count-5,this.timePoints.size());
             return;
          }
 
@@ -120,7 +105,7 @@ class Jump {
        
        def currentTime;
        for(it in this.timePoints) {
-          currentTime = this.elapsedTime;
+          currentTime = it.elapsedTime;
 
           if(it.isExit) {
 	     this.timePoints.removeRange(0,count)
@@ -132,7 +117,7 @@ class Jump {
        }
 
        for(it in this.timePoints) {
-       	  this.elapsedTime -= currentTime
+       	  it.elapsedTime -= currentTime
        }
    }
 
